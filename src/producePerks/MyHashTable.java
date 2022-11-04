@@ -34,14 +34,44 @@ public class MyHashTable {
     /*Inserts the key/value into the hashtable if there is room and the
     key isn't already in the table*/
     public boolean insert(int key, Customer value) {
+        if (size==CAPACITY)
+        {
+            return false;
+        }
+        int index = hashFunction(key);
+        int home = index;
+        int collisions =0;
+        boolean repeat = true;
+        while (!hashAry[index].isEmpty())
+        {
+            if (hashAry[index].isTombstone()) // for some reason if this was in the while loop it was looping forever
+            {
+                Record r = new Record(key,value);
+                hashAry[index]=r;
+                size++;
+                return true;
+            }
+            index = probeFunction(key,home,collisions);
+            collisions++;
+        }
+        Record r = new Record(key,value);
+        hashAry[index]=r;
+        size++;
         return true;
     }
 
     /**
      * Returns the home Index for the given key.
      */
-    private int hashFunction(int key) {
-        return -1;
+    private int hashFunction(int key)
+    {
+        int r = key % CAPACITY;
+        while (r>=CAPACITY)
+        {
+            int add = r-CAPACITY;
+            r = add;
+        }
+        return r;
     }
 
     /**
@@ -52,7 +82,13 @@ public class MyHashTable {
      * you may not use all of the parameters with the basic probe function
      */
     private int probeFunction(int key, int homeIndex, int collisions) {
-        return -1;
+        int r = homeIndex + collisions;
+        while (r>=CAPACITY)
+        {
+            int add = r-CAPACITY;
+            r = add;
+        }
+        return r;
     }
 
     /**
@@ -64,20 +100,49 @@ public class MyHashTable {
      * @return
      */
     private int indexOf(int key) {
+        int index= hashFunction(key);
+        int home = index;
+        int collisions =0;
+        while(hashAry[index].getValue()!=null)
+        {
+            if (hashAry[index].getKey()==key)
+            {
+                return index;
+            }
+            index = probeFunction(key,home,collisions);
+            collisions++;
+        }
         return -1;
     }
 
     /*Finds an element with a certain key and returns the associated Customer*/
-    public Customer find(int key) {
-
-        //This method should only be about 4 lines
+    public Customer find(int key)
+    {
+        int index = hashFunction(key);
+        int home = index;
+        int collisions=0;
+        while(hashAry[index].getValue()!=null || hashAry[index].isTombstone())
+        {
+            if(hashAry[index].getKey()==key)
+            {
+                return hashAry[index].getValue();
+            }
+            index = probeFunction(key,home,collisions);
+            collisions++;
+        }
         return null;
     }
 
     /*Deletes a table key and returns the associated value*/
     public Customer remove(int key) {
-
-        //This method should only be about 4 lines
+        Customer r = find(key);
+        if (r!=null)
+        {
+            int i = indexOf(key);
+            hashAry[i].deleteRecord();
+            size--;
+            return r;
+        }
         return null;
     }
 

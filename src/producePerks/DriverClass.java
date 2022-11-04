@@ -24,7 +24,7 @@ import java.util.ArrayList;
 
 /**
  * @author Katie Timmerman
- * @author < your name >
+ * @author < Jack Frambes >
  *
  * Course: Data Structures and Algorithms 
  * Semester:
@@ -40,7 +40,7 @@ public class DriverClass {
     }
 
     private static void testingHashTable() {
-        MyHashTable myTable = new MyHashTable(7);
+        MyHashTable myTable = new MyHashTable(10);
         ArrayList<Integer> addedKeys = new ArrayList<Integer>();
         System.out.println("TESTING ADDING ELEMENTS");
         
