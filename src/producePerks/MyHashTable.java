@@ -3,6 +3,8 @@
  */
 package producePerks;
 
+import java.math.BigInteger;
+
 /**
  * @author Katie Timmerman
  * @author < your name >
@@ -65,13 +67,15 @@ public class MyHashTable {
      */
     private int hashFunction(int key)
     {
-        int r = key % CAPACITY;
-        while (r>=CAPACITY)
+        BigInteger r = BigInteger.valueOf(key*key);
+        String m = r.toString();
+        int mid = Integer.valueOf(m.substring(m.length()/2,m.length()/2+1));
+        while (mid>=CAPACITY)
         {
-            int add = r-CAPACITY;
-            r = add;
+            int add = mid-CAPACITY;
+            mid = add;
         }
-        return r;
+        return mid;
     }
 
     /**
@@ -82,7 +86,7 @@ public class MyHashTable {
      * you may not use all of the parameters with the basic probe function
      */
     private int probeFunction(int key, int homeIndex, int collisions) {
-        int r = homeIndex + collisions;
+        int r = (hashFunction(key) + collisions * collisions) % homeIndex; //quadratic hashing
         while (r>=CAPACITY)
         {
             int add = r-CAPACITY;
@@ -103,7 +107,7 @@ public class MyHashTable {
         int index= hashFunction(key);
         int home = index;
         int collisions =0;
-        while(hashAry[index].getValue()!=null)
+        while(hashAry[index].getValue()!=null || hashAry[index].isTombstone())
         {
             if (hashAry[index].getKey()==key)
             {
@@ -136,9 +140,9 @@ public class MyHashTable {
     /*Deletes a table key and returns the associated value*/
     public Customer remove(int key) {
         Customer r = find(key);
-        if (r!=null)
+        int i = indexOf(key);
+        if (r!=null && i!=-1)
         {
-            int i = indexOf(key);
             hashAry[i].deleteRecord();
             size--;
             return r;
