@@ -11,7 +11,9 @@ package producePerks;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.sql.SQLOutput;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 /**
@@ -165,8 +167,21 @@ public class ProducePerksAnalysis {
      * Note that all the data has been loaded into the customers in the hash table
      * already. Additionally, customer_keys has all the IDs for all the Customers.
      */
-    private static void numberOfCouponsUsed(){
-        
+    private static void numberOfCouponsUsed()
+    {
+        int counter = 1;
+        System.out.printf("Customer     %4s%5s\n", "Dis", "Red");
+        int totalD =0;
+        int totalR =0;
+        for (int c : getCustomerIds())
+        {
+            Customer Cust = table.find(c);
+            System.out.printf("Customer %-4d%4d%4d\n", c, Cust.getDistributed().size(), Cust.getRedeemed().size());
+            totalD = totalD + Cust.getDistributed().size();
+            totalR = totalR + Cust.getRedeemed().size();
+        }
+        System.out.println("Total Distributed: "+totalD);
+        System.out.println("Total Redeemed: "+totalR);
     }
     
     /**
@@ -174,7 +189,8 @@ public class ProducePerksAnalysis {
      * Note that all the data has been loaded into the customers in the hash table
      * already. Additionally, customer_keys has all the IDs for all the Customers.
      */
-    private static void answerQuestion() {
+    private static void answerQuestion()
+    {
         System.out.println("Code to answer your question goes here.");
     }
 
