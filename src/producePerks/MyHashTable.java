@@ -7,7 +7,7 @@ import java.math.BigInteger;
 
 /**
  * @author Katie Timmerman
- * @author < your name >
+ * @author Jack Frambes
  *
  * Course: Data Structures and Algorithms Semester:
  */
@@ -86,7 +86,7 @@ public class MyHashTable {
      * you may not use all of the parameters with the basic probe function
      */
     private int probeFunction(int key, int homeIndex, int collisions) {
-        int r = (hashFunction(key) + collisions * collisions) % homeIndex; //quadratic hashing
+        int r = (hashFunction(key) + collisions * (7-(key%7)));
         while (r>=CAPACITY)
         {
             int add = r-CAPACITY;

@@ -34,8 +34,8 @@ public class DriverClass {
 
    
     public static void main(String[] args)  {
-        testingHashTable();
-        //ProducePerksAnalysis.startAnalysis();
+        //testingHashTable();
+        ProducePerksAnalysis.startAnalysis();
 
     }
 
